@@ -1,0 +1,15 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>socket.io test</title>
+        <script src="/socket.io/socket.io.js"></script>
+    </head>
+    <body>
+        <script>
+            const socket = io();
+            socket.on('hello', (data) => {
+                alert(data);
+            });
+        </script>
+    </body>
+</html>
