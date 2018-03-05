@@ -7,7 +7,12 @@ app.get('/', (req, res) => {
 });
 
 io.on('connection', (socket) => {
-  socket.emit('hello', 'lol');
+  console.log('client connected');
+
+
+  socket.on('sendInfo', (data) => {
+    
+  });
 });
 
 http.listen(3000, 'localhost', () => {

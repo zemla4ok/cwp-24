@@ -6,10 +6,22 @@
     </head>
     <body>
         <script>
-            const socket = io();
-            socket.on('hello', (data) => {
-                alert(data);
-            });
+            const socket = io();    
+         
+            
+            function sendValues(){
+                socket.emit('sendInfo',
+                            JSON.stringify({
+                                time: document.getElementById('time').value,
+                                curr: document.getElementById('curr').value
+                            }));
+            }
         </script>
+
+        <form>
+            <input type="text" id="time"/><br>
+            <input type="text" id="curr"/><br>
+            <input type="button" value="send data" onclick="sendValues()"/>
+        </form>
     </body>
 </html>
