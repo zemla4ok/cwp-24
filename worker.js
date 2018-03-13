@@ -1,36 +1,32 @@
 const axios = require('axios');
 
 class Worker{
-    constructor(){
-        this.interval = 1000;
+    constructor(timer = 1000){
+        this.interval = timer;
         this.data = {};
-        this.isWork = false;
-    }
-
-    getData(currency){
-        return this.data[currency];
-    }
-
-    setInterval(pInterval){
-        this.interval = pInterval;
-    }
-
-    startWorker(){
-        this.isWork = true;
         this.working();
     }
 
-    stopWorker(){
-        this.isWork = false;
+    setTimer(timer)
+    {
+        this.timer = timer;
+    }
+
+    getData() {
+        return this.data;
     }
 
     async working(){
-        axios.get('https://blockchain.info/en/ticker')
-            .then((res) => {
-                this.data = res;
-            })
-
-        setTimeout(this.working, this.interval);
+        try {
+            let response = await axios.get('https://blockchain.info/en/ticker');
+            this.data = response.data;
+            setTimeout(() => {
+                this.working();
+            }, this.timer);
+        }
+        catch (e) {
+            console.error(e);
+        }
     }
 }
 

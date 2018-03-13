@@ -6,22 +6,83 @@
     </head>
     <body>
         <script>
-            const socket = io();    
-         
+            const socket = io();             
             
             function sendValues(){
-                socket.emit('sendInfo',
-                            JSON.stringify({
-                                time: document.getElementById('time').value,
-                                curr: document.getElementById('curr').value
-                            }));
+                let id = document.getElementById('id').value;
+                let sec = document.getElementById('sec').value;
+                socket.emit('send', {
+                    id: id,
+                    sec: sec
+                })
+            }
+
+            socket.on('btc', data => {
+                console.log(data);
+                const info = document.getElementById('info');
+                info.innerHTML = `Buying: ${data.buy}</br>
+                                  Selling: ${data.sell}`
+            });
+
+            function sendBuyRoom(){
+                const text = document.getElementById('buyText').value;
+                socket.emit('message', {
+                    text: text,
+                    room: 'buy'
+                });
+            }
+
+            function sendSellRoom(){
+                const text = document.getElementById('sellText').value;
+                socket.emit('message', {
+                    text: text,
+                    room: 'sell'
+                });
             }
         </script>
 
         <form>
-            <input type="text" id="time"/><br>
-            <input type="text" id="curr"/><br>
+            <input type="text" id="sec"/><br>
+            <input type="text" id="id"/><br>
             <input type="button" value="send data" onclick="sendValues()"/>
         </form>
+        <h3>info</h3>
+        <div id='info'></div>
+        <table border=0 cellpadding=0 cellspacing=10>
+        <tr>
+            <td valign=top>
+                <h3>buy room</h3>
+            </td>
+            <td width=1 bgcolor=#000000>
+                <img src=1x1.gif width=1 height=1>
+            </td>
+            <td valign=top>
+                <h3>sell room</h3>
+            </td>
+        </tr>
+        <tr>
+            <td valign=top>
+                <div id="buy"></div>
+            </td>
+                <td width=1 bgcolor=#000000>                    <img src=1x1.gif width=1 height=1>
+            </td>
+            <td valign=top>
+                <div id="sell"></div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="text" id="buyText"/><br>
+                <input type="button" onclick="sendBuyRoom()" value="send buy"/>
+            </td>
+            <td width=1 bgcolor=#000000>
+                <img src=1x1.gif width=1 height=1>
+            </td>
+            <td>
+                <input type="text" id="sellText"/><br>
+                <input type="button" onclick="sendSellRoom()" value="send sell"/>
+            </td>
+        </tr>
+        </table>
     </body>
 </html>
