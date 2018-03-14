@@ -9,6 +9,9 @@ app.get('/', (req, res) => {
 
 const worker = new Worker();
 io.on('connection', (socket) => {
+  socket.join('buy');
+  socket.join('sell');
+
   let data = worker.getData();
   const keys = Object.keys(data);
   let interval = -1;
@@ -23,7 +26,16 @@ io.on('connection', (socket) => {
     }, data.sec * 1000);
   })
 
-  
+  socket.on('message', data => {
+    const {text, room} = data;
+    if(room == 'buy' || room == 'sell'){
+      console.log(room);
+      socket.nsp.to(room).emit('message', {
+        room,
+        text
+      })
+    }
+  })
 })
 
 

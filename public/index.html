@@ -39,6 +39,17 @@
                     room: 'sell'
                 });
             }
+
+            socket.on('message', data => {
+                const {room, text} = data;
+                if(room === 'buy'){
+                    console.log(text);
+                    document.getElementById('buy').innerHTML += text + '<br>';
+                }
+                if(room === 'sell'){
+                    document.getElementById('sell').innerHTML += text + '<br>';
+                }
+            })
         </script>
 
         <form>
